@@ -1,0 +1,34 @@
+const categoryRouter = require('./category')
+const tagRouter = require('./tag')
+
+function route(app) {
+    
+    app.use('/category',categoryRouter)
+    app.use('/tag',tagRouter)
+
+    app.get('/', (req,res,next) => {
+        res.render('home')
+    })
+
+    app.get('/create', (req,res,next) => {
+
+    })
+
+    app.post('/createOne', (req,res,next) => {
+
+    })
+
+    app.get('/update', (req,res,next) => {
+
+    })
+
+    app.post('/updateOne', (req,res,next) => {
+
+    })
+
+    app.get('/detele', (req,res,next) => {
+
+    })
+}
+
+module.exports = route;
