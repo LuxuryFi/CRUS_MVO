@@ -6,6 +6,7 @@ const route = require('./routes');
 const layouts = require('handlebars-layouts');
 const hbs = require('hbs');
 const fs = require('fs');
+require('./database/dbconnect');
 
 app.use(express.urlencoded({extended:true}))
 app.set('view engine','hbs')

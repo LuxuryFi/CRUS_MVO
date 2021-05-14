@@ -1,10 +1,12 @@
 const categoryRouter = require('./category')
 const tagRouter = require('./tag')
+const userRouter = require('./user')
 
 function route(app) {
     
-    app.use('/category',categoryRouter)
-    app.use('/tag',tagRouter)
+    app.use('/category',categoryRouter);
+    app.use('/tag',tagRouter);
+    app.use('/user',userRouter);
 
     app.get('/', (req,res,next) => {
         res.render('home')

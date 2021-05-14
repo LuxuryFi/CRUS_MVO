@@ -1,67 +1,53 @@
+const tagModel = require('../model/tag')
 const connection = require("../../database/dbconnect");
+const { findAll,findOne } = require('../model/tag');
+
 
 class TagController {
     async index(req, res) {
-        let query = "SELECT * FROM tag";
-        
+        let result = await tagModel.findAll();
+        console.log('hi')
+        res.render('tag/index',{tags : result})
+
     }
 
     async create(req, res) {
         let query = "SELECT * FROM tag";
-        let tags;
-        connection.query(query, (err, result) => {
-            if (err) throw err;
-            res.render('tag/create',{tags:result})
-        })
+        let result = await tagModel.findAll();
+
+        res.render('tag/create',{tags:result})
     }
 
     createOne(req,res) {
         let name = req.body.name;
         let description = req.body.description;
 
-        let query = "INSERT INTO tag (tag_name, description) VALUES ('" + name + "','" + description + "')";
-        connection.query(query, (err, result) => {
-            if (err) throw err;
-            console.log("1 result inserted")
-            res.redirect('/tag/index')
+        tagModel.create(name,description)
+        res.redirect('/tag/index')
+    }
 
-        })
-    }ca
-
-    update(req,res) {
+    async update(req,res) {
         let id = req.params.id;
-        let query1 = "SELECT * FROM tag WHERE id = " + id +";SELECT * FROM tag";
-        connection.query(query1, [1,2], (err, results) => {
-            if (err) throw err;
-            console.log(results[1])
-            console.log(results[0][0])
+        let result2 = await tagModel.findOne(id);
+        let result1 = await tagModel.findAll();
 
-            res.render('tag/update',{tag : results[0][0], tags: results[1]})
-        })
+        res.render('tag/update',{tag : result2[0], tags: result1})
     }
 
     async updateOne(req,res) {
         let id = req.body.id;
-    
         let description = req.body.description;
         let name = req.body.name;
 
-        console.log(req.body)
-        let query2 =  "UPDATE tag set tag_name = '" + name + "', description = '" + description + "' WHERE id = '" + id +"'";
-        connection.query(query2, (err, result) => {
-            if (err) throw err;
-            console.log(result)
-        })
+        await tagModel.updateOne(id,name,description)
+      
+        res.redirect('index')
     }
 
     async delete(req,res) {
         let id = req.params.id;
-        let query =  "DELETE FROM tag where id = '" + id +"'";
-        await connection.query(query, (err, result) => {
-            if (err) throw err;
-            console.log('delete sucess')
-            res.redirect('/tag/index')
-        })
+        await tagModel.deleteOne(id);
+        res.redirect('/tag/index');
     }
 }
 
